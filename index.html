@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Echoes of Discovery — NASA's Silent Pioneers</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="h-full bg-slate-950 text-slate-100 antialiased selection:bg-cyan-400 selection:text-slate-950">
+
+  <!-- Full-Screen Living Cosmic Map Background (space.jpg) -->
+  <div class="fixed inset-0 z-0 overflow-hidden">
+    <div id="cosmic-bg" class="cosmic-map-bg w-full h-full"></div>
+    <div class="cosmic-vignette absolute inset-0 pointer-events-none"></div>
+  </div>
+
+  <!-- Top Navigation & Audio Suite Bar -->
+  <header class="fixed top-0 left-0 right-0 z-40 px-4 py-3 bg-slate-950/75 backdrop-blur-md border-b border-cyan-500/20 no-print">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+
+      <!-- Brand Title (Clicks back to Cosmic Map) -->
+      <button onclick="returnToMap()" class="flex items-center gap-3 text-left group">
+        <div class="w-9 h-9 rounded-lg bg-cyan-500/15 border border-cyan-400/50 flex items-center justify-center font-mono-tech text-xs font-bold text-cyan-300 group-hover:bg-cyan-500/30 transition">
+          DSN
+        </div>
+        <div>
+          <div class="text-sm md:text-base font-bold tracking-wide text-white flex items-center gap-2">
+            ECHOES OF DISCOVERY
+            <span class="hidden sm:inline-block font-mono-tech text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40">
+              SPACE APPS 2026
+            </span>
+          </div>
+          <div class="font-mono-tech text-[10px] text-cyan-300/80">
+            NASA'S SILENT PIONEERS • INTERACTIVE COSMIC TIMELINE
+          </div>
+        </div>
+      </button>
+
+      <!-- Quick Zone Jumpers -->
+      <nav class="hidden lg:flex items-center gap-1.5 font-mono-tech text-xs">
+        <button onclick="returnToMap()" class="px-2.5 py-1 rounded hover:bg-white/10 text-slate-300 transition">COSMIC MAP</button>
+        <span class="text-slate-600">|</span>
+        <button onclick="openZone('earth')" class="px-2.5 py-1 rounded hover:bg-cyan-500/15 text-cyan-300 transition">EARTH</button>
+        <button onclick="openZone('moon')" class="px-2.5 py-1 rounded hover:bg-slate-500/20 text-slate-200 transition">MOON</button>
+        <button onclick="openZone('mars')" class="px-2.5 py-1 rounded hover:bg-amber-500/15 text-amber-300 transition">MARS</button>
+        <button onclick="openZone('deepspace')" class="px-2.5 py-1 rounded hover:bg-violet-500/15 text-violet-300 transition">DEEP SPACE</button>
+      </nav>
+
+      <!-- Audio, Passport & Accessibility Controls -->
+      <div class="flex items-center gap-2">
+        <button onclick="toggleAmbientAudio()" class="px-2.5 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700 hover:border-cyan-400/50 font-mono-tech text-[11px] text-cyan-300 transition">
+          <span id="ambient-btn-label">SPACE AUDIO OFF</span>
+        </button>
+
+        <button onclick="togglePassportModal()" class="px-3 py-1.5 rounded-lg bg-amber-500/15 border border-amber-400/50 hover:bg-amber-500/25 font-mono-tech text-[11px] font-bold text-amber-300 transition flex items-center gap-1.5">
+          <span>PASSPORT</span>
+          <span id="passport-count" class="px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 text-[10px]">0/14</span>
+        </button>
+
+        <button onclick="toggleA11y()" title="Accessibility / Large Text" class="px-2.5 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700 hover:border-amber-400/50 font-mono-tech text-xs font-bold text-slate-200 transition">
+          Aa
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       VIEW 1: LIVING COSMIC MAP LANDING PAGE
+       ======================================================================== -->
+  <main id="map-view" class="relative z-10 h-full w-full flex flex-col justify-between pt-20 pb-36">
+
+    <!-- Hero Welcome & Launch Audio Trigger -->
+    <div id="hero-welcome-card" class="max-w-xl mx-auto md:mx-10 mt-2 md:mt-6 px-4 transition-opacity duration-500">
+      <div class="glass-panel rounded-2xl p-5 md:p-6">
+        <div class="font-mono-tech text-[11px] text-cyan-300 font-bold tracking-wider mb-1">
+          ABANDONED BUT NOT FORGOTTEN
+        </div>
+        <h1 class="text-2xl md:text-4xl font-bold text-white leading-tight">
+          Bring NASA’s Silent Explorers Back to Life.
+        </h1>
+        <p id="hero-cta-sub" class="text-sm text-slate-300 mt-2 leading-relaxed">
+          Scattered across the Moon, Mars, and deep space are robotic pioneers that changed science forever. Click any world on the map—or launch the guided audio story.
+        </p>
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+          <button onclick="launchExpeditionWithAudio()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-bold text-xs md:text-sm tracking-wide shadow-[0_0_25px_rgba(56,189,248,0.45)] transition flex items-center gap-2">
+            <span>▶ LAUNCH AUDIO EXPEDITION</span>
+          </button>
+          <button onclick="toggleTimelineAutoplay()" class="px-4 py-2.5 rounded-xl bg-slate-900/90 border border-cyan-500/40 hover:bg-cyan-500/15 text-cyan-300 font-mono-tech text-xs font-bold transition">
+            <span id="tl-play-label">PLAY TIMELINE</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dramatic Audio Intro Punch-Line Overlay -->
+    <div id="intro-punch-overlay" class="hidden fixed inset-0 z-30 bg-slate-950/75 backdrop-blur-sm flex flex-col items-center justify-center px-6 text-center">
+      <div class="max-w-3xl">
+        <div class="font-mono-tech text-xs text-cyan-400 tracking-[0.25em] uppercase mb-4">
+          INCOMING DEEP SPACE TRANSMISSION
+        </div>
+        <p id="intro-punch-text" class="text-2xl md:text-5xl font-bold text-white leading-snug min-h-[120px] flex items-center justify-center">
+          Footprints fade. Batteries die. Signals go dark.
+        </p>
+        <button onclick="dismissIntroOverlay()" class="mt-8 px-4 py-2 rounded-lg border border-slate-600 text-slate-300 hover:text-white hover:border-cyan-400 font-mono-tech text-xs transition">
+          SKIP TO COSMIC MAP →
+        </button>
+      </div>
+    </div>
+
+    <!-- Interactive Planet Hotspots Positioned Over space.jpg -->
+    <!-- Hotspot 1: Earth & Orbit -->
+    <button onclick="openZone('earth')" class="hotspot-btn" style="left: 17%; top: 68%;" aria-label="Explore Earth and Orbit">
+      <div class="relative flex items-center justify-center">
+        <span class="hotspot-ring"></span>
+        <span class="w-4 h-4 rounded-full bg-cyan-400 border-2 border-white shadow-[0_0_15px_#38bdf8]"></span>
+      </div>
+      <div class="mt-2 px-2.5 py-1 rounded-lg bg-slate-950/85 border border-cyan-400/50 backdrop-blur-md text-left whitespace-nowrap shadow-lg">
+        <div class="font-mono-tech text-[10px] font-bold text-cyan-300">01 • EARTH & ORBIT</div>
+        <div class="text-[11px] font-bold text-white">DSN & Kepler Telescope</div>
+      </div>
+    </button>
+
+    <!-- Hotspot 2: The Moon -->
+    <button onclick="openZone('moon')" class="hotspot-btn" style="left: 50%; top: 72%;" aria-label="Explore The Moon">
+      <div class="relative flex items-center justify-center">
+        <span class="hotspot-ring"></span>
+        <span class="w-4 h-4 rounded-full bg-slate-200 border-2 border-cyan-300 shadow-[0_0_15px_#e2e8f0]"></span>
+      </div>
+      <div class="mt-2 px-2.5 py-1 rounded-lg bg-slate-950/85 border border-slate-400/50 backdrop-blur-md text-left whitespace-nowrap shadow-lg">
+        <div class="font-mono-tech text-[10px] font-bold text-slate-300">02 • THE MOON (5 ARTIFACTS)</div>
+        <div class="text-[11px] font-bold text-white">Surveyor 3, Apollo 11/12/15 & ALSEP</div>
+      </div>
+    </button>
+
+    <!-- Hotspot 3: Mars -->
+    <button onclick="openZone('mars')" class="hotspot-btn" style="left: 72%; top: 38%;" aria-label="Explore Mars">
+      <div class="relative flex items-center justify-center">
+        <span class="hotspot-ring hotspot-ring-amber"></span>
+        <span class="w-4 h-4 rounded-full bg-amber-400 border-2 border-white shadow-[0_0_15px_#fbbf24]"></span>
+      </div>
+      <div class="mt-2 px-2.5 py-1 rounded-lg bg-slate-950/85 border border-amber-400/50 backdrop-blur-md text-left whitespace-nowrap shadow-lg">
+        <div class="font-mono-tech text-[10px] font-bold text-amber-300">03 • MARS (5 ARTIFACTS)</div>
+        <div class="text-[11px] font-bold text-white">Viking, Sojourner, Rovers, InSight & Ingenuity</div>
+      </div>
+    </button>
+
+    <!-- Hotspot 4: Deep Space & Asteroids -->
+    <button onclick="openZone('deepspace')" class="hotspot-btn" style="left: 89%; top: 27%;" aria-label="Explore Deep Space">
+      <div class="relative flex items-center justify-center">
+        <span class="hotspot-ring hotspot-ring-violet"></span>
+        <span class="w-4 h-4 rounded-full bg-violet-400 border-2 border-white shadow-[0_0_15px_#a78bfa]"></span>
+      </div>
+      <div class="mt-2 -ml-16 px-2.5 py-1 rounded-lg bg-slate-950/85 border border-violet-400/50 backdrop-blur-md text-left whitespace-nowrap shadow-lg">
+        <div class="font-mono-tech text-[10px] font-bold text-violet-300">04 • DEEP SPACE (3 ARTIFACTS)</div>
+        <div class="text-[11px] font-bold text-white">NEAR, Dawn & Pioneer 10</div>
+      </div>
+    </button>
+
+  </main>
+
+  <!-- ========================================================================
+       VIEW 2: ARTIFACT STORY, MEDIA THEATER & LIFECYCLE TIMELINE
+       ======================================================================== -->
+  <section id="story-view" class="hidden relative z-20 h-full overflow-y-auto pt-20 pb-36 px-4">
+    <div class="max-w-7xl mx-auto">
+
+      <!-- Top Back Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div class="flex items-center gap-2">
+          <button onclick="returnToMap()" class="px-3.5 py-1.5 rounded-lg bg-slate-900/90 border border-cyan-500/40 hover:bg-cyan-500/20 text-cyan-300 font-mono-tech text-xs font-bold transition">
+            ← BACK TO COSMIC MAP
+          </button>
+          <button id="story-auto-btn" onclick="toggleTimelineAutoplay()" class="px-3.5 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700 hover:border-amber-400 text-slate-200 font-mono-tech text-xs font-bold transition">
+            <span id="story-auto-label">▶ AUTO-PLAY STORY</span>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button id="prev-artifact-btn" onclick="openArtifact(state.activeIndex - 1)" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-cyan-400 text-xs font-mono-tech disabled:opacity-30 transition">
+            ← PREV
+          </button>
+          <span id="story-counter" class="font-mono-tech text-xs text-slate-300 px-2">1 / 14</span>
+          <button id="next-artifact-btn" onclick="openArtifact(state.activeIndex + 1)" class="px-3 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-mono-tech font-bold disabled:opacity-30 transition">
+            NEXT →
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Split Stage -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- Left Column: Real NASA Media Theater + Tactile Hardware Control (5 cols) -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="glass-panel rounded-2xl p-4 space-y-3">
+            <!-- Photo / Video Switcher -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <button id="media-tab-photo" onclick="switchMediaMode('image')" class="px-3 py-1 rounded text-xs font-mono-tech">
+                  NASA PHOTO
+                </button>
+                <button id="media-tab-video" onclick="switchMediaMode('video')" class="hidden px-3 py-1 rounded text-xs font-mono-tech">
+                  ▶ MISSION VIDEO
+                </button>
+              </div>
+              <span class="font-mono-tech text-[10px] text-slate-400">OFFICIAL ARCHIVE</span>
+            </div>
+
+            <!-- Image View -->
+            <div id="media-image-wrap" class="relative rounded-xl overflow-hidden bg-slate-950 border border-white/10 aspect-[4/3]">
+              <img id="artifact-image" src="" alt="NASA Mission Photograph" class="w-full h-full object-cover ken-burns">
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-3">
+                <p id="artifact-image-caption" class="text-[11px] font-mono-tech text-slate-200"></p>
+              </div>
+            </div>
+
+            <!-- Video View -->
+            <div id="media-video-wrap" class="hidden relative rounded-xl overflow-hidden bg-slate-950 border border-cyan-500/30 aspect-[4/3]">
+              <video id="artifact-video" controls class="w-full h-full object-contain bg-black"></video>
+            </div>
+
+            <!-- Tactile Hardware Micro-Experiment -->
+            <div id="experiment-widget-box" class="p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/25">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Live 2026 Telemetry & Last Echo -->
+          <div class="glass-panel rounded-2xl p-4 space-y-3">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2">
+              <span id="live-metric-label" class="font-mono-tech text-[10px] text-cyan-300 font-bold"></span>
+              <span id="live-metric-value" class="font-mono-tech text-xs text-amber-300 font-bold"></span>
+            </div>
+            <div>
+              <div class="font-mono-tech text-[10px] text-slate-400 mb-1">LAST TRANSMISSION / ECHO:</div>
+              <p id="last-echo-text" class="text-xs font-mono-tech text-emerald-300 italic"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Story, Audio Narration & Animated Hardware Timeline (7 cols) -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="glass-panel rounded-2xl p-6 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span id="story-zone-pill" class="font-mono-tech text-xs font-bold text-cyan-300"></span>
+              <span id="story-status-pill" class="font-mono-tech text-[11px] font-bold px-3 py-1 rounded-full border"></span>
+            </div>
+
+            <div>
+              <h2 id="story-title" class="text-2xl md:text-3xl font-bold text-white"></h2>
+              <p id="story-subtitle" class="text-sm text-cyan-300 font-medium mt-0.5"></p>
+              <div class="font-mono-tech text-[11px] text-slate-400 mt-2 flex flex-wrap gap-x-4 gap-y-1">
+                <span>SITE: <span id="story-location" class="text-slate-200"></span></span>
+                <span>NSSDCA: <span id="story-nssdca" class="text-amber-300"></span></span>
+              </div>
+            </div>
+
+            <!-- Punch Line Callout + Voice Button -->
+            <div class="p-3.5 rounded-xl bg-cyan-950/40 border border-cyan-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <p id="story-punchline" class="text-sm font-semibold text-cyan-100 italic"></p>
+              <button id="narrate-btn" onclick="toggleArtifactNarration()" class="shrink-0 px-3.5 py-2 rounded-lg bg-cyan-500/20 border border-cyan-400 hover:bg-cyan-500/30 text-cyan-200 font-mono-tech text-xs font-bold transition">
+                🔊 <span id="narrate-label">LISTEN TO STORY</span>
+              </button>
+            </div>
+
+            <!-- Narrative Paragraphs -->
+            <div id="story-paragraphs" class="space-y-2">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Animated Hardware Lifecycle Timeline -->
+            <div class="pt-3 border-t border-white/10">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-mono-tech text-xs font-bold text-amber-300 uppercase tracking-wider">
+                  MISSION LIFECYCLE TIMELINE
+                </h3>
+                <a id="story-resource-link" href="#" target="_blank" rel="noopener noreferrer" class="font-mono-tech text-[11px] text-cyan-300 hover:text-cyan-200 underline">
+                  Official NASA / NSSDCA Page ↗
+                </a>
+              </div>
+              <div id="artifact-lifecycle-timeline" class="pl-2">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       PERSISTENT BOTTOM MASTER CHRONOLOGICAL TIMELINE (1963 -> 2024+)
+       ======================================================================== -->
+  <footer class="fixed bottom-0 left-0 right-0 z-30 bg-slate-950/85 backdrop-blur-md border-t border-cyan-500/25 px-4 py-2.5 no-print">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center justify-between mb-1">
+        <span class="font-mono-tech text-[10px] text-cyan-300 font-bold tracking-wider">
+          CHRONOLOGICAL EXPEDITION TIMELINE (1963 – 2024+)
+        </span>
+        <span class="font-mono-tech text-[10px] text-slate-400">
+          Click any milestone to jump in time
+        </span>
+      </div>
+      <div id="master-timeline-track" class="flex items-center gap-1 overflow-x-auto pb-1">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       ZONE TRANSIT FLIGHT CARD OVERLAY
+       ======================================================================== -->
+  <div id="zone-transit-overlay" class="hidden fixed inset-0 z-45 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center px-6 text-center pointer-events-none transition-opacity duration-300">
+    <div class="font-mono-tech text-xs text-cyan-400 tracking-[0.3em] uppercase mb-2">
+      TRAJECTORY UPDATE // INTERPLANETARY TRANSIT
+    </div>
+    <h2 id="transit-dest-title" class="text-3xl md:text-5xl font-bold text-white tracking-wide">
+      THE MOON
+    </h2>
+    <p id="transit-dest-sub" class="font-mono-tech text-sm text-amber-300 mt-2">
+      384,400 KM FROM EARTH • YEAR 1967
+    </p>
+  </div>
+
+  <!-- ========================================================================
+       EXPLORER'S PASSPORT MODAL
+       ======================================================================== -->
+  <div id="passport-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel rounded-2xl max-w-4xl w-full max-h-[85vh] flex flex-col p-6">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+        <div>
+          <h3 class="text-xl font-bold text-white">Explorer’s Mission Passport</h3>
+          <p class="text-xs text-slate-400">Collect stamps by visiting NASA’s silent and active pioneers across the solar system.</p>
+        </div>
+        <div class="flex items-center gap-2 no-print">
+          <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono-tech text-xs font-bold transition">
+            PRINT REPORT
+          </button>
+          <button onclick="togglePassportModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-mono-tech text-xs transition">
+            CLOSE ✕
+          </button>
+        </div>
+      </div>
+
+      <div id="passport-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 overflow-y-auto pr-1">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+{
+  "dsn": {
+    "image": "assets/images/dsn.jpg",
+    "image_title": "Tracks of a Giant",
+    "image_nasa_id": "PIA13277",
+    "video_url": "http://images-assets.nasa.gov/video/We are SCaN/We are SCaN~medium.mp4",
+    "video_title": "We are SCaN"
+  },
+  "surveyor3": {
+    "image": "assets/images/surveyor3.jpg",
+    "image_title": "ARTIST CONCEPT - SURVEYOR III - OCEAN OF STORM",
+    "image_nasa_id": "S69-55553",
+    "video_url": "http://images-assets.nasa.gov/video/jsc2024m000183_Butch_Wilmore_and_Suni_Williams_conduct_International_Space_Station_Research_241112-MP4/jsc2024m000183_Butch_Wilmore_and_Suni_Williams_conduct_International_Space_Station_Research_241112-MP4~medium.mp4",
+    "video_title": "NASA Astronauts Butch Wilmore and Suni Williams conduct International Space Station Research"
+  },
+  "apollo11": {
+    "image": "assets/images/apollo11.jpg",
+    "image_title": "Telecast of Astronauts Armstrong and Aldrin by the Lunar Module",
+    "image_nasa_id": "S69-39563",
+    "video_url": "http://images-assets.nasa.gov/video/Apollo_11_Plaque_Comparison_720p/Apollo_11_Plaque_Comparison_720p~medium.mp4",
+    "video_title": "Apollo_11_Plaque_Comparison_720p"
+  },
+  "apollo12": {
+    "image": "assets/images/apollo12.jpg",
+    "image_title": "Intrepid Crater on Mars Stereo",
+    "image_nasa_id": "PIA13595",
+    "video_url": "http://images-assets.nasa.gov/video/jsc2023m000058_Artemis_I_Entry_Splashdown_Recovery_Coverage_221211_720/jsc2023m000058_Artemis_I_Entry_Splashdown_Recovery_Coverage_221211_720~medium.mp4",
+    "video_title": "Artemis I Entry Splashdown Recovery Coverage"
+  },
+  "apollo15_lrv": {
+    "image": "assets/images/apollo15_lrv.jpg",
+    "image_title": "View of Apollo 15 Lunar Roving Vehicle and Lunar Module during simulations",
+    "image_nasa_id": "S71-30542",
+    "video_url": "http://images-assets.nasa.gov/video/Moon_Base_Update-Oct-Lunar_Rovers/Moon_Base_Update-Oct-Lunar_Rovers~medium.mp4",
+    "video_title": "NASA Moon Base: Rovers and Lunar Terrain Vehicles (October 2026 Update)"
+  },
+  "alsep": {
+    "image": "assets/images/alsep.jpg",
+    "image_title": "n/a",
+    "image_nasa_id": "6900959",
+    "video_url": null,
+    "video_title": ""
+  },
+  "viking1": {
+    "image": "assets/images/viking1.jpg",
+    "image_title": "Mars Surface near Viking Lander 1 Footpad",
+    "image_nasa_id": "PIA10738",
+    "video_url": "http://images-assets.nasa.gov/video/ksc_020105_why_jpl/ksc_020105_why_jpl~orig.mp4",
+    "video_title": "KSC-05-S-00036"
+  },
+  "sojourner": {
+    "image": "assets/images/sojourner.jpg",
+    "image_title": "Newest is Biggest: Three Generations of NASA Mars Rovers",
+    "image_nasa_id": "PIA11436",
+    "video_url": "http://images-assets.nasa.gov/video/JPL-20230607-MARSf-0001-Mars Report Whats in A Name/JPL-20230607-MARSf-0001-Mars Report Whats in A Name~medium.mp4",
+    "video_title": "How Does NASA Name Things on Mars? (Mars Report - June 2023)"
+  },
+  "mer": {
+    "image": "assets/images/mer.jpg",
+    "image_title": "Mars Rover Opportunity's View of 'Orion Crater' (Stereo)",
+    "image_nasa_id": "PIA21706",
+    "video_url": "http://images-assets.nasa.gov/video/JPL-20230607-MARSf-0001-Mars Report Whats in A Name/JPL-20230607-MARSf-0001-Mars Report Whats in A Name~medium.mp4",
+    "video_title": "How Does NASA Name Things on Mars? (Mars Report - June 2023)"
+  },
+  "phoenix_insight": {
+    "image": "assets/images/phoenix_insight.jpg",
+    "image_title": "Cutaway of SEIS (Artist's Concept)",
+    "image_nasa_id": "PIA22320",
+    "video_url": "http://images-assets.nasa.gov/video/JPL-20211115-MARSf-0001-Hows the Weather on Mars/JPL-20211115-MARSf-0001-Hows the Weather on Mars~medium.mp4",
+    "video_title": "How\u2019s the Weather on Mars? (NASA Mars Report) (November 15, 2021)"
+  },
+  "ingenuity": {
+    "image": "assets/images/ingenuity.jpg",
+    "image_title": "Ingenuity Mars Helicopter's Record-Breaking Flight",
+    "image_nasa_id": "PIA25321",
+    "video_url": "http://images-assets.nasa.gov/video/JPL-20210323-TECHf-0001-Helicopter First Flight VF/JPL-20210323-TECHf-0001-Helicopter First Flight VF~medium.mp4",
+    "video_title": "NASA Looking at Next Steps for Ingenuity Mars Helicopter"
+  },
+  "near": {
+    "image": "assets/images/near.jpg",
+    "image_title": "Eros in Stereo",
+    "image_nasa_id": "PIA02471",
+    "video_url": null,
+    "video_title": ""
+  },
+  "dawn": {
+    "image": "assets/images/dawn.jpg",
+    "image_title": "Dawn Spacecraft with Vesta and Ceres Artist Concept",
+    "image_nasa_id": "PIA12033",
+    "video_url": "http://images-assets.nasa.gov/video/ksc_070207_dawn_mim5/ksc_070207_dawn_mim5~orig.mp4",
+    "video_title": "KSC-07-S-00047"
+  },
+  "kepler": {
+    "image": "assets/images/kepler.jpg",
+    "image_title": "Partially Cloudy Skies on Kepler-7b Artist Concept",
+    "image_nasa_id": "PIA17445",
+    "video_url": "http://images-assets.nasa.gov/video/GSFC_20190327_TESS_m13155_Voyager/GSFC_20190327_TESS_m13155_Voyager~medium.mp4",
+    "video_title": "Going Interstellar with TESS and Kepler"
+  },
+  "pioneer": {
+    "image": "assets/images/pioneer.jpg",
+    "image_title": "ARC-1972-AC72-2135",
+    "image_nasa_id": "ARC-1972-AC72-2135",
+    "video_url": "http://images-assets.nasa.gov/video/KSC-20231013-VP-MMS01-0001-SpaceX_Psyche_Live_Launch_Show_HD-WON_M1708/KSC-20231013-VP-MMS01-0001-SpaceX_Psyche_Live_Launch_Show_HD-WON_M1708~medium.mp4",
+    "video_title": "Psyche Live Launch Coverage"
+  }
+}
