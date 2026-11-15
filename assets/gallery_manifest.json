@@ -1,0 +1,76 @@
+{
+  "surveyor3": [
+    "assets/images/surveyor3.jpg",
+    "assets/images/surveyor3_2.jpg",
+    "assets/images/surveyor3_3.jpg"
+  ],
+  "apollo11": [
+    "assets/images/apollo11.jpg",
+    "assets/images/apollo11_2.jpg",
+    "assets/images/apollo11_3.jpg"
+  ],
+  "apollo12": [
+    "assets/images/apollo12.jpg",
+    "assets/images/apollo12_2.jpg",
+    "assets/images/apollo12_3.jpg"
+  ],
+  "apollo15_lrv": [
+    "assets/images/apollo15_lrv.jpg",
+    "assets/images/apollo15_lrv_2.jpg",
+    "assets/images/apollo15_lrv_3.jpg"
+  ],
+  "alsep": [
+    "assets/images/alsep.jpg",
+    "assets/images/alsep_2.jpg",
+    "assets/images/alsep_3.jpg"
+  ],
+  "viking1": [
+    "assets/images/viking1.jpg",
+    "assets/images/viking1_2.jpg",
+    "assets/images/viking1_3.jpg"
+  ],
+  "sojourner": [
+    "assets/images/sojourner.jpg",
+    "assets/images/sojourner_2.jpg",
+    "assets/images/sojourner_3.jpg"
+  ],
+  "mer": [
+    "assets/images/mer.jpg",
+    "assets/images/mer_2.jpg",
+    "assets/images/mer_3.jpg"
+  ],
+  "phoenix_insight": [
+    "assets/images/phoenix_insight.jpg",
+    "assets/images/phoenix_insight_2.jpg",
+    "assets/images/phoenix_insight_3.jpg"
+  ],
+  "ingenuity": [
+    "assets/images/ingenuity.jpg",
+    "assets/images/ingenuity_2.jpg",
+    "assets/images/ingenuity_3.jpg"
+  ],
+  "near": [
+    "assets/images/near.jpg",
+    "assets/images/near_2.jpg"
+  ],
+  "dawn": [
+    "assets/images/dawn.jpg",
+    "assets/images/dawn_2.jpg",
+    "assets/images/dawn_3.jpg"
+  ],
+  "kepler": [
+    "assets/images/kepler.jpg",
+    "assets/images/kepler_2.jpg",
+    "assets/images/kepler_3.jpg"
+  ],
+  "pioneer": [
+    "assets/images/pioneer.jpg",
+    "assets/images/pioneer_2.jpg",
+    "assets/images/pioneer_3.jpg"
+  ],
+  "dsn": [
+    "assets/images/dsn.jpg",
+    "assets/images/dsn_2.jpg",
+    "assets/images/dsn_3.jpg"
+  ]
+}

@@ -759,10 +759,49 @@ const KID_INSIGHTS = {
   }
 };
 
+/* Curiosity Cliffhangers for the Next-Stop Teaser Button */
+const CLIFFHANGERS = {
+  dsn: 'Next: Why did NASA think the Moon might swallow astronauts?',
+  kepler: 'Next: Ready to land on the Moon? Meet the Dust Tester!',
+  surveyor3: 'Next: See the gold launchpad Eagle left behind at Tranquility Base.',
+  apollo11: 'Next: Meet the Moon mirror that still answers Earth with zero batteries!',
+  alsep: 'Next: How did Apollo 12 land within walking distance of an old friend?',
+  apollo12: 'Next: Why did NASA weave Moon buggy tires out of piano wire?',
+  apollo15_lrv: 'Next: Blast off 225M km to Mars—meet the lab that lasted 25x longer!',
+  viking1: 'Next: How did a microwave-sized robot bounce onto Mars in airbags?',
+  sojourner: 'Next: Meet the twin rovers that ran a 15-year Mars marathon!',
+  mer: 'Next: How did InSight hear a marsquake smaller than a single atom?',
+  phoenix_insight: 'Next: They said Mars air was too thin to fly—watch Ingenuity soar!',
+  ingenuity: 'Next: Venture to Deep Space—how did an orbiter land on an asteroid?',
+  near: 'Next: See the blue-plasma engine that orbited two alien worlds!',
+  dawn: 'Next: Meet the nuclear time capsule racing out of our solar system!',
+  pioneer: 'Expedition Complete! Open your Explorer Passport & Certificate!'
+};
+
+const GALLERY_MAP = {
+  dsn: ['assets/images/dsn.jpg', 'assets/images/dsn_2.jpg', 'assets/images/dsn_3.jpg'],
+  surveyor3: ['assets/images/surveyor3.jpg', 'assets/images/surveyor3_2.jpg', 'assets/images/surveyor3_3.jpg'],
+  apollo11: ['assets/images/apollo11.jpg', 'assets/images/apollo11_2.jpg', 'assets/images/apollo11_3.jpg'],
+  apollo12: ['assets/images/apollo12.jpg', 'assets/images/apollo12_2.jpg', 'assets/images/apollo12_3.jpg'],
+  apollo15_lrv: ['assets/images/apollo15_lrv.jpg', 'assets/images/apollo15_lrv_2.jpg', 'assets/images/apollo15_lrv_3.jpg'],
+  alsep: ['assets/images/alsep.jpg', 'assets/images/alsep_2.jpg', 'assets/images/alsep_3.jpg'],
+  viking1: ['assets/images/viking1.jpg', 'assets/images/viking1_2.jpg', 'assets/images/viking1_3.jpg'],
+  sojourner: ['assets/images/sojourner.jpg', 'assets/images/sojourner_2.jpg', 'assets/images/sojourner_3.jpg'],
+  mer: ['assets/images/mer.jpg', 'assets/images/mer_2.jpg', 'assets/images/mer_3.jpg'],
+  phoenix_insight: ['assets/images/phoenix_insight.jpg', 'assets/images/phoenix_insight_2.jpg', 'assets/images/phoenix_insight_3.jpg'],
+  ingenuity: ['assets/images/ingenuity.jpg', 'assets/images/ingenuity_2.jpg', 'assets/images/ingenuity_3.jpg'],
+  near: ['assets/images/near.jpg', 'assets/images/near_2.jpg'],
+  dawn: ['assets/images/dawn.jpg', 'assets/images/dawn_2.jpg', 'assets/images/dawn_3.jpg'],
+  kepler: ['assets/images/kepler.jpg', 'assets/images/kepler_2.jpg', 'assets/images/kepler_3.jpg'],
+  pioneer: ['assets/images/pioneer.jpg', 'assets/images/pioneer_2.jpg', 'assets/images/pioneer_3.jpg']
+};
+
 ARTIFACTS.forEach(a => {
   if (KID_INSIGHTS[a.id]) {
     Object.assign(a, KID_INSIGHTS[a.id]);
   }
+  a.cliffhanger = CLIFFHANGERS[a.id] || 'Continue the expedition';
+  a.gallery = GALLERY_MAP[a.id] || [a.image];
 });
 
 /* Zone-by-Zone Story Order: All Earth -> All Moon -> All Mars -> All Deep Space */

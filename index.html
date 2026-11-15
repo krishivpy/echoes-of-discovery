@@ -58,9 +58,9 @@
           <span id="ambient-btn-label">SPACE AUDIO OFF</span>
         </button>
 
-        <button onclick="togglePassportModal()" class="px-3 py-1.5 rounded-lg bg-amber-500/15 border border-amber-400/50 hover:bg-amber-500/25 font-mono-tech text-[11px] font-bold text-amber-300 transition flex items-center gap-1.5">
-          <span>PASSPORT</span>
-          <span id="passport-count" class="px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 text-[10px]">0/14</span>
+        <button onclick="togglePassportModal()" class="px-3 py-1.5 rounded-lg bg-amber-500/15 border border-amber-400/50 hover:bg-amber-500/25 font-mono-tech text-[11px] font-bold text-amber-300 transition flex items-center gap-2">
+          <span id="explorer-rank-label" class="hidden sm:inline text-amber-200">SPACE CADET</span>
+          <span id="passport-count" class="px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 text-[10px]">0/15</span>
         </button>
 
         <button onclick="toggleA11y()" title="Accessibility / Large Text" class="px-2.5 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700 hover:border-amber-400/50 font-mono-tech text-xs font-bold text-slate-200 transition">
@@ -75,9 +75,37 @@
        ======================================================================== -->
   <main id="map-view" class="relative z-10 h-full w-full flex flex-col justify-start pt-16 pb-32 overflow-hidden">
 
-    <!-- Top-Center Live Cosmic Odometer Strip (Directly Below Header Bar) -->
-    <div class="w-full max-w-5xl mx-auto px-4 pt-2 z-20">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+    <!-- Top Row: ECHOES OF DISCOVERY Hero (Left-Aligned) + Live Cosmic Odometer Strip (Same Level) -->
+    <div class="w-full px-4 md:px-6 pt-3 z-20 grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
+
+      <!-- Left: Hero Welcome & Begin the Story Card -->
+      <div id="hero-welcome-card" class="lg:col-span-4 lg:max-w-md transition-opacity duration-500">
+        <div class="glass-panel rounded-2xl p-4 border border-cyan-400/35">
+          <div class="font-mono-tech text-[10px] text-amber-300 font-bold tracking-widest uppercase">
+            NASA SPACE APPS 2026 • ABANDONED BUT NOT FORGOTTEN
+          </div>
+          <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-300 via-white to-amber-300 bg-clip-text text-transparent mt-0.5">
+            ECHOES OF DISCOVERY
+          </h1>
+          <h2 class="text-xs md:text-sm font-semibold text-cyan-200 mt-0.5">
+            Bringing NASA’s Silent Explorers Back to Life
+          </h2>
+          <p id="hero-cta-sub" class="text-xs text-slate-300 mt-1.5 leading-relaxed">
+            Even after their batteries fade, NASA’s discarded robots still echo with discoveries. Follow their journey from <strong class="text-white">Earth → Moon → Mars → Deep Space</strong>.
+          </p>
+          <div class="mt-3 flex flex-wrap items-center gap-2.5">
+            <button onclick="launchExpeditionWithAudio()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-bold text-xs tracking-wide shadow-[0_0_20px_rgba(56,189,248,0.45)] transition flex items-center gap-2">
+              <span>▶ BEGIN THE STORY</span>
+            </button>
+            <button onclick="toggleTimelineAutoplay()" class="px-3.5 py-2 rounded-xl bg-slate-900/90 border border-cyan-500/40 hover:bg-cyan-500/15 text-cyan-300 font-mono-tech text-xs font-bold transition">
+              <span id="tl-play-label">PLAY TIMELINE</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Live Cosmic Odometer Strip (Aligned at Same Top Level) -->
+      <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
         <div class="glass-panel rounded-xl px-3.5 py-2.5 border border-violet-400/35">
           <div class="font-mono-tech text-[10px] text-violet-300 font-bold flex items-center justify-between">
             <span>PIONEER 10 LIVE DISTANCE</span>
@@ -117,32 +145,7 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Hero Welcome & Begin the Story Card -->
-    <div id="hero-welcome-card" class="max-w-lg mx-4 md:mx-10 mt-3 transition-opacity duration-500 z-20">
-      <div class="glass-panel rounded-2xl p-5 border border-cyan-400/35">
-        <div class="font-mono-tech text-[11px] text-amber-300 font-bold tracking-widest uppercase">
-          NASA SPACE APPS 2026 • ABANDONED BUT NOT FORGOTTEN
-        </div>
-        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-300 via-white to-amber-300 bg-clip-text text-transparent mt-1">
-          ECHOES OF DISCOVERY
-        </h1>
-        <h2 class="text-sm md:text-base font-semibold text-cyan-200 mt-1">
-          Bringing NASA’s Silent Explorers Back to Life
-        </h2>
-        <p id="hero-cta-sub" class="text-xs md:text-sm text-slate-300 mt-2 leading-relaxed">
-          Even after their batteries fade, NASA’s discarded landers, rovers, and probes still echo with the discoveries that changed how we see the universe. Follow their journey from <strong class="text-white">Earth → Moon → Mars → Deep Space</strong>.
-        </p>
-        <div class="mt-4 flex flex-wrap items-center gap-3">
-          <button onclick="launchExpeditionWithAudio()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-bold text-xs md:text-sm tracking-wide shadow-[0_0_25px_rgba(56,189,248,0.45)] transition flex items-center gap-2">
-            <span>▶ BEGIN THE STORY</span>
-          </button>
-          <button onclick="toggleTimelineAutoplay()" class="px-4 py-2.5 rounded-xl bg-slate-900/90 border border-cyan-500/40 hover:bg-cyan-500/15 text-cyan-300 font-mono-tech text-xs font-bold transition">
-            <span id="tl-play-label">PLAY TIMELINE</span>
-          </button>
-        </div>
-      </div>
     </div>
 
     <!-- Dramatic Audio Intro Punch-Line Overlay -->
@@ -259,8 +262,14 @@
             </div>
 
             <!-- Image View -->
-            <div id="media-image-wrap" class="relative rounded-xl overflow-hidden bg-slate-950 border border-white/10 aspect-[4/3]">
-              <img id="artifact-image" src="" alt="NASA Mission Photograph" class="w-full h-full object-cover ken-burns">
+            <div id="media-image-wrap" class="relative rounded-xl overflow-hidden bg-slate-950 border border-white/10 aspect-[4/3] group">
+              <img id="artifact-image" src="" alt="NASA Mission Photograph" class="w-full h-full object-cover ken-burns transition-opacity duration-300">
+              <button onclick="triggerCinemaSpotlight(ARTIFACTS[state.activeIndex], true)" title="Expand to Cinema View" class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-slate-950/75 border border-white/20 text-[10px] font-mono-tech text-cyan-300 opacity-85 hover:opacity-100 transition">
+                ⛶ CINEMA ZOOM
+              </button>
+              <div id="media-gallery-dots" class="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-slate-950/70 px-2 py-1 rounded-full border border-white/15">
+                <!-- Populated by JS -->
+              </div>
               <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-3">
                 <p id="artifact-image-caption" class="text-[11px] font-mono-tech text-slate-200"></p>
               </div>
@@ -313,14 +322,9 @@
             <!-- Punch Line Callout + Voice Button -->
             <div class="p-3.5 rounded-xl bg-cyan-950/40 border border-cyan-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <p id="story-punchline" class="text-sm font-semibold text-cyan-100 italic"></p>
-              <div class="flex items-center gap-1.5 shrink-0">
-                <button id="narrate-btn" onclick="toggleArtifactNarration()" class="px-3.5 py-2 rounded-lg bg-cyan-500/20 border border-cyan-400 hover:bg-cyan-500/30 text-cyan-200 font-mono-tech text-xs font-bold transition">
-                  🔊 <span id="narrate-label">LISTEN TO STORY</span>
-                </button>
-                <button onclick="skipForwardSeconds(5)" title="Skip forward 5 seconds (or press Right Arrow)" class="px-2.5 py-2 rounded-lg bg-slate-900 border border-slate-700 hover:border-cyan-400 text-cyan-300 font-mono-tech text-xs font-bold transition">
-                  +5s ⏩
-                </button>
-              </div>
+              <button id="narrate-btn" onclick="toggleArtifactNarration()" class="shrink-0 px-3.5 py-2 rounded-lg bg-cyan-500/20 border border-cyan-400 hover:bg-cyan-500/30 text-cyan-200 font-mono-tech text-xs font-bold transition">
+                🔊 <span id="narrate-label">LISTEN TO STORY</span>
+              </button>
             </div>
 
             <!-- Narrative Paragraphs -->
@@ -328,27 +332,52 @@
               <!-- Populated by JS -->
             </div>
 
-            <!-- The Problem -> The Clever Trick Engineering Hook -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              <div class="p-3 rounded-xl bg-rose-950/35 border border-rose-500/30">
-                <div class="font-mono-tech text-[10px] text-rose-300 font-bold uppercase mb-1">THE PROBLEM</div>
-                <p id="story-problem" class="text-xs text-slate-200 leading-relaxed"></p>
+            <!-- 3 Clean Discovery Tabs (Decluttered Student Experience) -->
+            <div class="pt-2 border-t border-white/10">
+              <div class="flex flex-wrap items-center gap-2 mb-3">
+                <button onclick="switchStoryTab('trick')" id="tab-btn-trick" class="px-3 py-1.5 rounded-lg font-mono-tech text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400 transition">
+                  💡 PROBLEM & CLEVER TRICK
+                </button>
+                <button onclick="switchStoryTab('scale')" id="tab-btn-scale" class="px-3 py-1.5 rounded-lg font-mono-tech text-xs font-bold bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition">
+                  🌍 IN EVERYDAY TERMS
+                </button>
+                <button onclick="switchStoryTab('timeline')" id="tab-btn-timeline" class="px-3 py-1.5 rounded-lg font-mono-tech text-xs font-bold bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition">
+                  📅 MISSION TIMELINE
+                </button>
+                <a id="story-resource-link" href="#" target="_blank" rel="noopener noreferrer" class="ml-auto font-mono-tech text-[11px] text-cyan-300 hover:text-cyan-200 underline">
+                  NASA Archive ↗
+                </a>
               </div>
-              <div class="p-3 rounded-xl bg-amber-950/35 border border-amber-500/30">
-                <div class="font-mono-tech text-[10px] text-amber-300 font-bold uppercase mb-1">THE CLEVER TRICK →</div>
-                <p id="story-trick" class="text-xs text-slate-200 leading-relaxed"></p>
-              </div>
-            </div>
 
-            <!-- Kid-Friendly Everyday Comparisons & Gravity Check -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              <div class="p-3 rounded-xl bg-slate-900/85 border border-cyan-500/25">
-                <div class="font-mono-tech text-[10px] text-cyan-300 font-bold uppercase mb-1">IN EVERYDAY TERMS</div>
-                <p id="story-everyday-scale" class="text-xs text-slate-200 leading-relaxed"></p>
+              <!-- Tab 1: Problem -> Clever Trick -->
+              <div id="tab-panel-trick" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="p-3.5 rounded-xl bg-rose-950/35 border border-rose-500/30">
+                  <div class="font-mono-tech text-[10px] text-rose-300 font-bold uppercase mb-1">THE PROBLEM</div>
+                  <p id="story-problem" class="text-xs md:text-sm text-slate-200 leading-relaxed"></p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-amber-950/35 border border-amber-500/30">
+                  <div class="font-mono-tech text-[10px] text-amber-300 font-bold uppercase mb-1">THE CLEVER TRICK →</div>
+                  <p id="story-trick" class="text-xs md:text-sm text-slate-200 leading-relaxed"></p>
+                </div>
               </div>
-              <div class="p-3 rounded-xl bg-slate-900/85 border border-violet-500/25">
-                <div class="font-mono-tech text-[10px] text-violet-300 font-bold uppercase mb-1">GRAVITY & LIGHT CHECK</div>
-                <p id="story-gravity-check" class="text-xs text-slate-200 leading-relaxed"></p>
+
+              <!-- Tab 2: Everyday Scale & Gravity Check -->
+              <div id="tab-panel-scale" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="p-3.5 rounded-xl bg-slate-900/85 border border-cyan-500/25">
+                  <div class="font-mono-tech text-[10px] text-cyan-300 font-bold uppercase mb-1">IN EVERYDAY TERMS</div>
+                  <p id="story-everyday-scale" class="text-xs md:text-sm text-slate-200 leading-relaxed"></p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-900/85 border border-violet-500/25">
+                  <div class="font-mono-tech text-[10px] text-violet-300 font-bold uppercase mb-1">GRAVITY & LIGHT CHECK</div>
+                  <p id="story-gravity-check" class="text-xs md:text-sm text-slate-200 leading-relaxed"></p>
+                </div>
+              </div>
+
+              <!-- Tab 3: Animated Hardware Lifecycle Timeline -->
+              <div id="tab-panel-timeline" class="hidden pl-2 pt-1">
+                <div id="artifact-lifecycle-timeline">
+                  <!-- Populated by JS -->
+                </div>
               </div>
             </div>
 
@@ -358,20 +387,14 @@
               <p id="story-takeaway" class="text-xs md:text-sm font-semibold text-emerald-100"></p>
             </div>
 
-            <!-- Animated Hardware Lifecycle Timeline -->
-            <div class="pt-3 border-t border-white/10">
-              <div class="flex items-center justify-between mb-3">
-                <h3 class="font-mono-tech text-xs font-bold text-amber-300 uppercase tracking-wider">
-                  MISSION LIFECYCLE TIMELINE
-                </h3>
-                <a id="story-resource-link" href="#" target="_blank" rel="noopener noreferrer" class="font-mono-tech text-[11px] text-cyan-300 hover:text-cyan-200 underline">
-                  Official NASA / NSSDCA Page ↗
-                </a>
+            <!-- Curiosity Cliffhanger Next Button -->
+            <button id="next-cliffhanger-btn" onclick="goNextWithCliffhanger()" class="w-full p-3.5 rounded-xl bg-gradient-to-r from-cyan-500/20 to-amber-500/20 hover:from-cyan-500/30 hover:to-amber-500/30 border border-cyan-400/50 flex items-center justify-between gap-3 text-left transition group">
+              <div>
+                <div class="font-mono-tech text-[10px] text-amber-300 font-bold uppercase">KEEP EXPLORING</div>
+                <div id="cliffhanger-text" class="text-xs md:text-sm font-bold text-white mt-0.5"></div>
               </div>
-              <div id="artifact-lifecycle-timeline" class="pl-2">
-                <!-- Populated by JS -->
-              </div>
-            </div>
+              <span class="font-mono-tech text-sm font-bold text-cyan-300 group-hover:translate-x-1 transition-transform shrink-0">GO →</span>
+            </button>
           </div>
         </div>
 
@@ -397,6 +420,23 @@
       </div>
     </div>
   </footer>
+
+  <!-- ========================================================================
+       CINEMA SPOTLIGHT ZOOM OVERLAY (FULL-SCREEN IMAGE -> SHRINKS TO CARD)
+       ======================================================================== -->
+  <div id="cinema-spotlight-overlay" class="hidden fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4 md:p-10 transition-all duration-700 ease-in-out opacity-0 scale-105">
+    <div id="cinema-spotlight-frame" class="relative w-full h-full max-w-6xl max-h-[82vh] rounded-2xl overflow-hidden border border-cyan-400/40 shadow-[0_0_60px_rgba(56,189,248,0.25)] transition-all duration-700 ease-in-out">
+      <img id="cinema-spotlight-img" src="" alt="NASA Mission Cinema View" class="w-full h-full object-cover ken-burns">
+      <button onclick="shrinkCinemaSpotlight()" class="absolute top-4 right-4 px-3.5 py-1.5 rounded-lg bg-slate-950/80 border border-white/25 hover:border-cyan-400 text-xs font-mono-tech text-cyan-200 transition">
+        ↙ RETURN TO CARD
+      </button>
+      <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent p-6 md:p-8">
+        <div id="cinema-spotlight-meta" class="font-mono-tech text-xs text-amber-300 font-bold tracking-wider mb-1"></div>
+        <h2 id="cinema-spotlight-title" class="text-2xl md:text-4xl font-extrabold text-white"></h2>
+        <p id="cinema-spotlight-punch" class="text-sm md:text-lg text-cyan-200 font-medium mt-1.5 max-w-3xl"></p>
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================================
        ZONE TRANSIT FLIGHT CARD OVERLAY

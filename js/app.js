@@ -13,6 +13,9 @@ const state = {
   storyOrderMode: 'journey', // 'journey' (Earth->Moon->Mars->DeepSpace) | 'timeline' (1963->2024)
   autoAdvanceTimer: null,
   transitTimer: null,
+  cinemaTimer: null,
+  cinemaSlideInterval: null,
+  galleryIndex: 0,
   speechFullText: '',
   speechCharOffset: 0,
   speechOnEnd: null,
@@ -198,6 +201,14 @@ function openArtifact(index) {
     clearTimeout(state.transitTimer);
     state.transitTimer = null;
   }
+  if (state.cinemaTimer) {
+    clearTimeout(state.cinemaTimer);
+    state.cinemaTimer = null;
+  }
+  if (state.cinemaSlideInterval) {
+    clearInterval(state.cinemaSlideInterval);
+    state.cinemaSlideInterval = null;
+  }
   stopSpeech();
 
   const artifact = ARTIFACTS[index];
@@ -229,6 +240,13 @@ function openArtifact(index) {
   const narrationDelay = zoneChanged ? 1500 : 450;
   if (zoneChanged) {
     showZoneTransitCard(artifact);
+    state.cinemaTimer = setTimeout(() => {
+      if (state.view === 'story' && state.activeIndex === index) {
+        triggerCinemaSpotlight(artifact);
+      }
+    }, 1250);
+  } else {
+    triggerCinemaSpotlight(artifact);
   }
 
   // If Continuous Story Mode is active, narrate this artifact automatically
@@ -239,6 +257,90 @@ function openArtifact(index) {
       }
     }, narrationDelay);
   }
+}
+
+function triggerCinemaSpotlight(artifact, manual = false) {
+  if (!artifact) return;
+  const overlay = document.getElementById('cinema-spotlight-overlay');
+  const frame = document.getElementById('cinema-spotlight-frame');
+  const img = document.getElementById('cinema-spotlight-img');
+  const meta = document.getElementById('cinema-spotlight-meta');
+  const title = document.getElementById('cinema-spotlight-title');
+  const punch = document.getElementById('cinema-spotlight-punch');
+  if (!overlay || !frame || !img) return;
+
+  if (state.cinemaTimer) {
+    clearTimeout(state.cinemaTimer);
+    state.cinemaTimer = null;
+  }
+  if (state.cinemaSlideInterval) {
+    clearInterval(state.cinemaSlideInterval);
+    state.cinemaSlideInterval = null;
+  }
+  if (state.cinemaSlideInterval) {
+    clearInterval(state.cinemaSlideInterval);
+    state.cinemaSlideInterval = null;
+  }
+
+  const photos = artifact.gallery && artifact.gallery.length ? artifact.gallery : [artifact.image];
+  let slideIdx = 0;
+
+  img.src = photos[0];
+  if (meta) meta.innerText = `${artifact.year} • ${artifact.zoneLabel} • PHOTO 1/${photos.length}`;
+  if (title) title.innerText = artifact.name;
+  if (punch) punch.innerText = `"${artifact.punchLine}"`;
+
+  overlay.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    overlay.classList.remove('opacity-0', 'scale-105');
+    overlay.classList.add('opacity-100', 'scale-100');
+    frame.classList.remove('scale-75');
+    frame.classList.add('scale-100');
+  });
+
+  // Cycle through all original NASA mission photos while in Cinema Spotlight
+  if (photos.length > 1) {
+    state.cinemaSlideInterval = setInterval(() => {
+      slideIdx = (slideIdx + 1) % photos.length;
+      img.src = photos[slideIdx];
+      if (meta) meta.innerText = `${artifact.year} • ${artifact.zoneLabel} • PHOTO ${slideIdx + 1}/${photos.length}`;
+    }, 1800);
+  }
+
+  // Hold full-screen NASA photo slideshow, then smoothly shrink back to card size
+  if (!manual) {
+    const holdMs = photos.length > 1 ? photos.length * 1800 : 4200;
+    state.cinemaTimer = setTimeout(() => {
+      shrinkCinemaSpotlight();
+    }, holdMs);
+  }
+}
+
+function shrinkCinemaSpotlight() {
+  const overlay = document.getElementById('cinema-spotlight-overlay');
+  const frame = document.getElementById('cinema-spotlight-frame');
+  if (!overlay || !frame) return;
+
+  if (state.cinemaTimer) {
+    clearTimeout(state.cinemaTimer);
+    state.cinemaTimer = null;
+  }
+  if (state.cinemaSlideInterval) {
+    clearInterval(state.cinemaSlideInterval);
+    state.cinemaSlideInterval = null;
+  }
+  if (state.cinemaSlideInterval) {
+    clearInterval(state.cinemaSlideInterval);
+    state.cinemaSlideInterval = null;
+  }
+
+  frame.classList.remove('scale-100');
+  frame.classList.add('scale-75');
+  overlay.classList.remove('opacity-100', 'scale-100');
+  overlay.classList.add('opacity-0');
+  setTimeout(() => {
+    overlay.classList.add('hidden');
+  }, 650);
 }
 
 function showZoneTransitCard(artifact) {
@@ -261,12 +363,35 @@ function showZoneTransitCard(artifact) {
 function returnToMap() {
   stopTimelineAutoplay();
   stopSpeech();
+  if (state.transitTimer) {
+    clearTimeout(state.transitTimer);
+    state.transitTimer = null;
+  }
+  if (state.cinemaTimer) {
+    clearTimeout(state.cinemaTimer);
+    state.cinemaTimer = null;
+  }
+  if (state.cinemaSlideInterval) {
+    clearInterval(state.cinemaSlideInterval);
+    state.cinemaSlideInterval = null;
+  }
+  state.isPlayingIntro = false;
   state.view = 'map';
   state.lastZone = null;
 
   const bg = document.getElementById('cosmic-bg');
   if (bg) bg.classList.remove('zoomed');
 
+  // Stop any playing mission video
+  const vidEl = document.getElementById('artifact-video');
+  if (vidEl) { vidEl.pause(); vidEl.src = ''; }
+
+  // Ensure all overlays/modals/story views are hidden and landing page is visible
+  document.getElementById('cinema-spotlight-overlay')?.classList.add('hidden');
+  document.getElementById('zone-transit-overlay')?.classList.add('hidden');
+  document.getElementById('intro-punch-overlay')?.classList.add('hidden');
+  document.getElementById('passport-modal')?.classList.add('hidden');
+  document.getElementById('hero-welcome-card')?.classList.remove('opacity-0', 'pointer-events-none');
   document.getElementById('story-view').classList.add('hidden');
   document.getElementById('map-view').classList.remove('hidden');
 }
@@ -338,10 +463,41 @@ function renderArtifactStage(a) {
   // Interactive Hardware Micro-Experiment
   renderExperimentWidget(a);
 
+  // Reset to Problem & Clever Trick tab & set Curiosity Cliffhanger
+  switchStoryTab('trick');
+  const cliffEl = document.getElementById('cliffhanger-text');
+  if (cliffEl) cliffEl.innerText = a.cliffhanger || 'Continue the expedition';
+
   // Zone Sibling Pills (quick switch within same planet or prev/next)
   document.getElementById('prev-artifact-btn').disabled = (state.activeIndex === 0);
   document.getElementById('next-artifact-btn').disabled = (state.activeIndex === ARTIFACTS.length - 1);
   document.getElementById('story-counter').innerText = `${state.activeIndex + 1} / ${ARTIFACTS.length}`;
+}
+
+function switchStoryTab(tabName) {
+  ['trick', 'scale', 'timeline'].forEach(t => {
+    const panel = document.getElementById(`tab-panel-${t}`);
+    const btn = document.getElementById(`tab-btn-${t}`);
+    if (!panel || !btn) return;
+    if (t === tabName) {
+      panel.classList.remove('hidden');
+      btn.className = 'px-3 py-1.5 rounded-lg font-mono-tech text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400 transition';
+    } else {
+      panel.classList.add('hidden');
+      btn.className = 'px-3 py-1.5 rounded-lg font-mono-tech text-xs font-bold bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition';
+    }
+  });
+}
+
+function goNextWithCliffhanger() {
+  const nextIdx = getNextStoryIndex(state.activeIndex);
+  if (nextIdx !== -1) {
+    openArtifact(nextIdx);
+  } else if (state.activeIndex + 1 < ARTIFACTS.length) {
+    openArtifact(state.activeIndex + 1);
+  } else {
+    togglePassportModal();
+  }
 }
 
 function switchMediaMode(mode) {
@@ -364,12 +520,33 @@ function switchMediaMode(mode) {
     const vidEl = document.getElementById('artifact-video');
     if (vidEl) { vidEl.pause(); vidEl.src = ''; }
     imgWrap.classList.remove('hidden');
-    document.getElementById('artifact-image').src = a.image;
-    document.getElementById('artifact-image-caption').innerText = `${a.imageCaption} (NASA ID: ${a.nasaId})`;
+    state.galleryIndex = 0;
+    setGalleryPhoto(0);
     photoBtn.className = 'px-3 py-1 rounded text-xs font-mono-tech bg-cyan-500/20 text-cyan-300 border border-cyan-400';
     if (videoBtn && a.videoUrl) {
       videoBtn.className = 'px-3 py-1 rounded text-xs font-mono-tech bg-slate-900 text-slate-400 border border-slate-700 hover:text-white';
     }
+  }
+}
+
+function setGalleryPhoto(idx) {
+  const a = ARTIFACTS[state.activeIndex];
+  if (!a) return;
+  const photos = a.gallery && a.gallery.length ? a.gallery : [a.image];
+  state.galleryIndex = Math.max(0, Math.min(idx, photos.length - 1));
+
+  const imgEl = document.getElementById('artifact-image');
+  if (imgEl) imgEl.src = photos[state.galleryIndex];
+
+  const capEl = document.getElementById('artifact-image-caption');
+  if (capEl) capEl.innerText = `${a.imageCaption} (Photo ${state.galleryIndex + 1}/${photos.length} • NASA ID: ${a.nasaId})`;
+
+  const dotsEl = document.getElementById('media-gallery-dots');
+  if (dotsEl) {
+    dotsEl.innerHTML = photos.map((_, i) => `
+      <button onclick="setGalleryPhoto(${i})" title="Photo ${i + 1}"
+        class="w-2.5 h-2.5 rounded-full transition ${i === state.galleryIndex ? 'bg-cyan-400 scale-110' : 'bg-slate-500 hover:bg-slate-300'}"></button>
+    `).join('');
   }
 }
 
@@ -390,27 +567,39 @@ function renderExperimentWidget(a) {
       <input type="range" min="${exp.min}" max="${exp.max}" value="${exp.value}"
         class="w-full accent-cyan-400 cursor-pointer"
         oninput="handleExpSlider('${a.id}', this.value, '${exp.unit}')">
-      <div id="exp-feedback" class="text-[11px] font-mono-tech text-slate-400 mt-1.5">Drag slider to test hardware telemetry.</div>
+      <div class="mt-2 h-2.5 w-full rounded-full bg-slate-950 border border-white/10 overflow-hidden">
+        <div id="exp-visual-bar" class="h-full bg-gradient-to-r from-cyan-400 to-violet-400 transition-all duration-200" style="width: ${Math.round(((exp.value - exp.min) / (exp.max - exp.min)) * 100)}%"></div>
+      </div>
+      <div id="exp-feedback" class="text-[11px] font-mono-tech text-slate-300 mt-1.5">Drag slider to test live hardware telemetry.</div>
     `;
   } else {
     box.innerHTML = `
       <div class="flex items-center justify-between gap-3">
         <div>
           <div class="text-xs font-mono-tech text-amber-300 font-bold">${exp.label}</div>
-          <div id="exp-feedback" class="text-[11px] font-mono-tech text-slate-400 mt-0.5">Ready for command</div>
+          <div id="exp-feedback" class="text-[11px] font-mono-tech text-slate-300 mt-0.5">Ready for command</div>
         </div>
-        <button onclick="handleExpButton('${a.id}')" class="shrink-0 px-3 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-mono-tech text-xs font-bold transition shadow-[0_0_15px_rgba(56,189,248,0.35)]">
+        <button onclick="handleExpButton('${a.id}')" class="shrink-0 px-3.5 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-mono-tech text-xs font-bold transition shadow-[0_0_15px_rgba(56,189,248,0.35)]">
           ${exp.actionText}
         </button>
+      </div>
+      <div class="mt-2.5 h-2.5 w-full rounded-full bg-slate-950 border border-white/10 overflow-hidden">
+        <div id="exp-visual-bar" class="h-full w-0 bg-gradient-to-r from-emerald-400 via-cyan-400 to-amber-400 transition-all duration-700"></div>
       </div>
     `;
   }
 }
 
 function handleExpSlider(id, val, unit) {
+  const a = ARTIFACTS.find(x => x.id === id);
   const valEl = document.getElementById('exp-slider-val');
   const fb = document.getElementById('exp-feedback');
+  const bar = document.getElementById('exp-visual-bar');
   if (valEl) valEl.innerText = `${val} ${unit}`;
+  if (bar && a?.experiment) {
+    const pct = Math.max(4, Math.round(((val - a.experiment.min) / (a.experiment.max - a.experiment.min)) * 100));
+    bar.style.width = `${pct}%`;
+  }
   if (!fb) return;
 
   if (id === 'ingenuity') {
@@ -434,15 +623,22 @@ function handleExpSlider(id, val, unit) {
 function handleExpButton(id) {
   const a = ARTIFACTS.find(x => x.id === id);
   const fb = document.getElementById('exp-feedback');
+  const bar = document.getElementById('exp-visual-bar');
   if (!a || !fb) return;
 
+  if (bar) {
+    bar.style.width = '0%';
+    void bar.offsetWidth;
+    bar.style.width = '100%';
+  }
+
   if (a.experiment.type === 'laser') {
-    fb.innerText = 'Firing 532 nm pulse to Moon... (2.56s round trip)';
+    fb.innerText = 'Firing 532 nm green pulse to Moon... (2.56s round trip)';
     fb.className = 'text-[11px] font-mono-tech text-amber-300 mt-0.5';
     setTimeout(() => {
       fb.innerText = a.experiment.resultText;
       fb.className = 'text-[11px] font-mono-tech text-emerald-400 mt-0.5';
-    }, 1200);
+    }, 1100);
   } else {
     fb.innerText = a.experiment.resultText;
     fb.className = 'text-[11px] font-mono-tech text-emerald-400 mt-0.5';
@@ -748,8 +944,19 @@ function stopAmbientAudio() {
    EXPLORER'S PASSPORT & ACCESSIBILITY
    ============================================================================ */
 function updatePassportCount() {
+  const count = state.visitedIds.size;
   const el = document.getElementById('passport-count');
-  if (el) el.innerText = `${state.visitedIds.size}/${ARTIFACTS.length}`;
+  if (el) el.innerText = `${count}/${ARTIFACTS.length}`;
+
+  const rankEl = document.getElementById('explorer-rank-label');
+  if (rankEl) {
+    let rank = 'SPACE CADET';
+    if (count >= ARTIFACTS.length) rank = 'MASTER PIONEER ★';
+    else if (count >= 12) rank = 'DEEP SPACE CAPTAIN';
+    else if (count >= 8) rank = 'MARS GEOLOGIST';
+    else if (count >= 4) rank = 'LUNAR SCOUT';
+    rankEl.innerText = rank;
+  }
 }
 
 function togglePassportModal() {
