@@ -634,3 +634,242 @@ const ARTIFACTS = [
     }
   }
 ];
+
+/* Kid-Friendly Story Enhancers: Archetypes, Everyday Comparisons, Problem -> Trick & Takeaways */
+const KID_INSIGHTS = {
+  dsn: {
+    archetype: 'The Cosmic Ears',
+    problem: 'As Earth spins, a spacecraft on Mars or the Moon would vanish behind our planet’s curve.',
+    trick: 'Place three 70-meter dishes 120° apart around Earth to pass the signal like a relay baton.',
+    everydayScale: 'Catches signals weaker than a smartphone battery 20 billion kilometers away.',
+    gravityCheck: 'Earth Gravity (1.0g) • Radio travels at the speed of light (300,000 km/s).',
+    takeaway: 'Every space mission depends on three giant antenna stations listening 24/7.'
+  },
+  surveyor3: {
+    archetype: 'The Dust Tester',
+    problem: 'Scientists feared lunar dust might be deep quicksand that would swallow astronauts.',
+    trick: 'Send a lightweight robot first with an accordion arm to poke and test the soil.',
+    everydayScale: 'Its scoop dug 17.5 cm deep—about the length of a standard pencil.',
+    gravityCheck: 'Moon Gravity (1/6th Earth): A 40 kg student weighs only 6.6 kg here!',
+    takeaway: 'Surveyor 3 proved lunar dust was safe so Apollo astronauts could land.'
+  },
+  apollo11: {
+    archetype: 'The First Launchpad',
+    problem: 'Carrying fuel to blast the entire heavy spaceship back off the Moon was impossible.',
+    trick: 'Split the lander in two—leave the heavy lower legs behind as a launchpad.',
+    everydayScale: 'Landed with less than 30 seconds of rocket fuel left—less than a traffic light.',
+    gravityCheck: 'Moon Gravity (1/6th Earth): You could jump 6 times higher than on Earth!',
+    takeaway: 'Eagle’s lower half stayed behind as humanity’s very first off-world launchpad.'
+  },
+  alsep: {
+    archetype: 'The Immortal Mirror',
+    problem: 'Batteries eventually die, silencing science instruments left on the Moon.',
+    trick: 'Use 100 glass corner-cube prisms that bounce Earth lasers back with zero electricity.',
+    everydayScale: 'The Moon drifts away at 3.8 cm/year—about as fast as your fingernails grow!',
+    gravityCheck: 'Light-Speed Ping: A laser takes just 2.56 seconds to reach the Moon and bounce back.',
+    takeaway: 'With zero batteries, Apollo’s glass mirrors still answer Earth’s lasers 57 years later.'
+  },
+  apollo12: {
+    archetype: 'The Bullseye Lander',
+    problem: 'Apollo 11 landed miles off target; future missions needed pinpoint accuracy.',
+    trick: 'Use radar updates to steer Intrepid right onto the rim of Surveyor 3’s crater.',
+    everydayScale: 'Landed just 160 meters from Surveyor 3—less than two football fields away!',
+    gravityCheck: 'Moon Gravity (1/6th Earth): Airless vacuum means footprints last millions of years.',
+    takeaway: 'Apollo 12 proved astronauts could land with pinpoint accuracy next to older robots.'
+  },
+  apollo15_lrv: {
+    archetype: 'The Electric Moon Buggy',
+    problem: 'Rubber tires would freeze, crack, and burst in the Moon’s airless extremes.',
+    trick: 'Weave springy tires out of piano wire and titanium chevrons, folded like origami.',
+    everydayScale: 'Weighed 210 kg on Earth, but felt like only 35 kg (a large dog) on the Moon.',
+    gravityCheck: 'Moon Gravity (1/6th Earth): Piano-wire tires never burst or freeze in vacuum.',
+    takeaway: 'Giving astronauts wheels let them explore 28 km and find rocks from the Moon’s birth.'
+  },
+  pioneer: {
+    archetype: 'The Cosmic Time Capsule',
+    problem: 'Sunlight past Mars is far too weak for solar panels to power a spacecraft.',
+    trick: 'Use nuclear plutonium batteries (RTGs) that turn natural heat into electricity for decades.',
+    everydayScale: 'Moving at ~11.9 km/s—fast enough to cross the entire United States in 6 minutes!',
+    gravityCheck: 'Deep Space (0g): One-way radio signal now takes over 19 hours at light speed.',
+    takeaway: 'Pioneer 10 proved spacecraft can cross the Asteroid Belt and carry Earth’s story to the stars.'
+  },
+  viking1: {
+    archetype: 'The First Mars Lab',
+    problem: 'We couldn’t bring Martian dirt back to Earth labs in 1976.',
+    trick: 'Shrink a full chemistry and biology lab inside a lander with a 3-meter robotic scoop.',
+    everydayScale: 'Built for 90 days, it worked for 6 years—like a phone battery lasting 25 times longer!',
+    gravityCheck: 'Mars Gravity (38% Earth): A 40 kg student weighs only 15 kg on Mars.',
+    takeaway: 'Viking 1 gave us our first color Mars panoramas and six years of weather data.'
+  },
+  sojourner: {
+    archetype: 'The Little Trailblazer',
+    problem: 'Landing heavy rockets on Mars was expensive, and rocks could easily tip a rover over.',
+    trick: 'Bounce onto Mars inside giant airbags and use 6-wheel Rocker-Bogie legs to climb rocks.',
+    everydayScale: 'About the size of a microwave oven and weighed as much as a medium dog (11.5 kg).',
+    gravityCheck: 'Mars Gravity (38% Earth): Wrapped in giant airbags to bounce safely onto the surface.',
+    takeaway: 'Tiny Sojourner proved wheeled robots could climb rocks and explore another planet.'
+  },
+  near: {
+    archetype: 'The Asteroid Hitchhiker',
+    problem: 'NEAR Shoemaker was built only to orbit an asteroid—it had zero landing legs.',
+    trick: 'Gently pulse tiny thrusters to touch down on Asteroid 433 Eros at human walking speed.',
+    everydayScale: 'Touched down at 1.8 m/s—literally the speed of a person walking down a hallway.',
+    gravityCheck: 'Micro-Gravity (0.0005g): A 40 kg student would weigh less than a single paperclip!',
+    takeaway: 'Even without landing legs, NEAR Shoemaker pulled off the first soft landing on an asteroid.'
+  },
+  mer: {
+    archetype: 'The 15-Year Marathoners',
+    problem: 'Martian rocks are coated in thick red dust that hides what they are really made of.',
+    trick: 'Give each rover a diamond-tipped grinder (RAT) to polish away the dust like a geologist.',
+    everydayScale: 'Opportunity drove 45.16 km—longer than a full 26.2-mile Olympic marathon!',
+    gravityCheck: 'Mars Gravity (38% Earth): Outlived its 90-day warranty by an incredible 60 times.',
+    takeaway: 'Spirit and Opportunity found mineral "blueberries" proving ancient Mars had liquid water.'
+  },
+  dawn: {
+    archetype: 'The Blue-Ion Voyager',
+    problem: 'Normal rocket fuel is way too heavy for one ship to orbit two different alien worlds.',
+    trick: 'Use super-efficient Xenon ion engines that push glowing blue plasma for months.',
+    everydayScale: 'Ion engines are 10x more fuel-efficient—like driving 300 miles on a single gallon of gas.',
+    gravityCheck: 'Asteroid Belt (2.77 AU): Gentle plasma thrust builds speed slowly over months.',
+    takeaway: 'Dawn is the only spacecraft ever to orbit two separate alien worlds in one mission.'
+  },
+  kepler: {
+    archetype: 'The Planet Hunter',
+    problem: 'Distant planets are hidden in the blinding glare of their host stars.',
+    trick: 'Stare at 150,000 stars at once and measure the tiny brightness dip when a planet passes in front.',
+    everydayScale: 'Spotting a planet transit is like seeing a flea walk across a car headlight 100 miles away.',
+    gravityCheck: 'Solar Orbit: Trails Earth around the Sun at ~29.5 km every single second.',
+    takeaway: 'Kepler discovered 2,660+ alien worlds and proved planets outnumber stars in our galaxy.'
+  },
+  phoenix_insight: {
+    archetype: 'The Planet Doctor',
+    problem: 'Mars’s surface is frozen, so its water ice and seismic heartbeats are hidden underground.',
+    trick: 'Use Phoenix’s arm to scrape for ice and InSight’s dome-shielded stethoscope to hear marsquakes.',
+    everydayScale: 'InSight’s seismometer could feel ground shakes smaller than the width of a single atom!',
+    gravityCheck: 'Mars Gravity (38% Earth): Listened to 1,319 marsquakes to map Mars’s liquid core.',
+    takeaway: 'Phoenix uncovered buried water ice and InSight took the pulse of Mars’s deep interior.'
+  },
+  ingenuity: {
+    archetype: 'The First Alien Flyer',
+    problem: 'Mars’s air is 100 times thinner than Earth’s—ordinary helicopter blades can’t lift off.',
+    trick: 'Make the chopper weigh just 1.8 kg and spin twin carbon blades at a blazing 2,537 RPM.',
+    everydayScale: 'Flying in Mars’s 1% air is like flying a chopper 3 times higher than Mount Everest!',
+    gravityCheck: 'Mars Gravity (38% Earth): Spun twin carbon blades at 2,537 RPM to generate lift.',
+    takeaway: 'Planned for 5 hops, Ingenuity flew 72 times—opening the skies of other worlds.'
+  }
+};
+
+ARTIFACTS.forEach(a => {
+  if (KID_INSIGHTS[a.id]) {
+    Object.assign(a, KID_INSIGHTS[a.id]);
+  }
+});
+
+/* Zone-by-Zone Story Order: All Earth -> All Moon -> All Mars -> All Deep Space */
+const JOURNEY_ORDER = [
+  'dsn', 'kepler',
+  'surveyor3', 'apollo11', 'alsep', 'apollo12', 'apollo15_lrv',
+  'viking1', 'sojourner', 'mer', 'phoenix_insight', 'ingenuity',
+  'near', 'dawn', 'pioneer'
+];
+
+/* Structured 5-Part Audio Scripts (Name, Purpose, Parts, Science, Present & Future) */
+const AUDIO_BRIEFS = {
+  dsn: {
+    purpose: 'Its purpose is to keep Earth in constant radio contact with every spacecraft as our planet spins.',
+    parts: 'Its key parts are three giant 70-meter parabolic dishes in California, Spain, and Australia, equipped with ultra-cold microwave receivers.',
+    science: 'It made every planetary science discovery possible by catching faint radio whispers from Apollo, Mars rovers, and interstellar probes.',
+    presentFuture: 'Today, the Deep Space Network is fully active 24/7, and in the future it will link Artemis astronauts on the Moon and future missions to Mars.'
+  },
+  kepler: {
+    purpose: 'Its purpose was to find out if Earth-like planets around other stars are rare or common in our galaxy.',
+    parts: 'Its main parts were a 0.95-meter telescope mirror, a 95-megapixel camera sensor, and a curved solar wing.',
+    science: 'By watching 150,000 stars for tiny brightness dips, Kepler discovered over 2,660 exoplanets and proved planets outnumber stars.',
+    presentFuture: 'Today, Kepler is retired and drifting silently behind Earth in solar orbit, paving the way for future planet-hunting telescopes.'
+  },
+  surveyor3: {
+    purpose: 'Its purpose was to prove robotic soft landings worked and test if lunar dust could support heavy Apollo spaceships.',
+    parts: 'Its main parts included a triangular metal frame, three shock-absorbing footpads, a TV camera, and an accordion-style soil scoop arm.',
+    science: 'It dug trenches and proved the Moon’s surface was solid, and later taught scientists how 31 months of space weather ages metal.',
+    presentFuture: 'Today, Surveyor 3 sits as a quiet monument inside Surveyor Crater, waiting as a historic landmark for future Artemis explorers.'
+  },
+  apollo11: {
+    purpose: 'Its purpose was to safely land the first two humans on the Moon and act as a launchpad for their return.',
+    parts: 'Its main parts were a throttleable rocket engine, four honeycomb landing legs, gold Kapton thermal foil, and the crew ladder.',
+    science: 'It delivered astronauts and surface labs to Tranquility Base, bringing back the first 21.5 kilograms of Moon rocks.',
+    presentFuture: 'Today, the Eagle descent stage stands untouched in the airless vacuum as a protected heritage site for future generations.'
+  },
+  alsep: {
+    purpose: 'Its purpose was to leave behind a long-term science station to study moonquakes and the Moon’s exact orbit.',
+    parts: 'Its key parts were passive seismometers, solar-wind collectors, and 100 precision glass corner-cube mirror prisms.',
+    science: 'It mapped the Moon’s inner core and still bounces Earth lasers back today, proving the Moon drifts 3.8 centimeters away each year.',
+    presentFuture: 'While its radios turned off in 1977, the glass mirrors work forever with zero power and will guide future lunar navigation.'
+  },
+  apollo12: {
+    purpose: 'Its purpose was to prove NASA could achieve a pinpoint landing right next to an earlier robotic spacecraft.',
+    parts: 'Its parts included a precision landing radar, gold thermal shielding, four crushable legs, and nuclear science bays.',
+    science: 'Astronauts collected basalt rocks and brought home Surveyor 3’s camera, revealing how cosmic rays and micrometeorites weather hardware.',
+    presentFuture: 'Today, Intrepid’s descent stage rests beside Surveyor 3 in Oceanus Procellarum as a twin monument to precision flight.'
+  },
+  apollo15_lrv: {
+    purpose: 'Its purpose was to give astronauts wheels so they could explore mountains and canyons miles away from their lander.',
+    parts: 'Its key parts were a folding aluminum frame, four independent electric hub motors, and springy piano-wire mesh tires.',
+    science: 'It carried astronauts nearly 28 kilometers to find the 4.1-billion-year-old Genesis Rock, proving the Moon once had a magma ocean.',
+    presentFuture: 'Today, three Lunar Roving Vehicles remain parked on the Moon, inspiring the next-generation Artemis Moon buggies.'
+  },
+  viking1: {
+    purpose: 'Its purpose was to make the first long-term landing on Mars, photograph the surface, and test the soil for signs of life.',
+    parts: 'Its parts included two nuclear RTG power generators, twin cameras, a weather boom, and a 3-meter robotic soil-scooping arm.',
+    science: 'It sent back the first clear color panoramas of Mars and tracked Martian weather and dust storms for over six years.',
+    presentFuture: 'Silent since 1982, Viking 1 rests as the Thomas Mutch Memorial Station, preserving our first long look at the Red Planet.'
+  },
+  sojourner: {
+    purpose: 'Its purpose was to prove that a small, solar-powered wheeled rover could drive across rocky Martian terrain.',
+    parts: 'Its main parts were a microwave-sized warm electronics box, a 16-watt solar panel, six cleated wheels on Rocker-Bogie legs, and an X-ray rock sensor.',
+    science: 'It analyzed rocks like Barnacle Bill, discovering silica-rich volcanic stone shaped by ancient heat and water.',
+    presentFuture: 'Though its radio base faded after 83 sols, Sojourner’s six-wheel Rocker-Bogie design lives on in every modern Mars rover.'
+  },
+  mer: {
+    purpose: 'Their purpose was to act as robotic field geologists searching opposite sides of Mars for clues of ancient water.',
+    parts: 'Their main parts were sweeping solar wings, tall stereo camera masts, and a diamond-tipped Rock Abrasion Tool grinder.',
+    science: 'Opportunity drove over 45 kilometers and discovered hematite blueberries—proving ancient Mars once had standing liquid water.',
+    presentFuture: 'Spirit rests in soft sand and Opportunity was silenced by a 2018 dust storm, leaving behind the roadmap for future Mars astronauts.'
+  },
+  phoenix_insight: {
+    purpose: 'Their purpose was to look beneath Mars’s surface—Phoenix to dig for water ice, and InSight to listen to marsquakes.',
+    parts: 'Phoenix used a digging scoop and thermal oven, while InSight used UltraFlex solar wings and a dome-shielded SEIS seismometer.',
+    science: 'Phoenix proved buried water ice exists on Mars, and InSight recorded 1,319 marsquakes to measure Mars’s liquid iron core.',
+    presentFuture: 'Both landers are now silent under Martian dust, but their maps of buried ice and crust thickness will guide future human bases.'
+  },
+  ingenuity: {
+    purpose: 'Its purpose was to test whether powered, controlled helicopter flight was even possible in Mars’s ultra-thin air.',
+    parts: 'Its main parts were a tiny 1.8-kilogram body, a top solar panel, and twin carbon-fiber blades spinning at 2,537 RPM.',
+    science: 'Designed for 5 test flights, it flew 72 times across Jezero Crater, proving aerial scouting works on other worlds.',
+    presentFuture: 'Grounded at Valinor Hills after Flight 72, Ingenuity now inspires future Mars choppers and Titan’s Dragonfly rotorcraft.'
+  },
+  near: {
+    purpose: 'Its purpose was to orbit a near-Earth asteroid for a full year and map its mass, craters, and minerals.',
+    parts: 'Its parts included four solar wings, a fixed radio dish, laser rangefinder, and X-ray and gamma-ray spectrometers.',
+    science: 'It proved Asteroid 433 Eros is a solid primordial rock, and pulled off an improvised soft landing to measure surface chemistry.',
+    presentFuture: 'Resting intact on Eros since 2001, NEAR Shoemaker showed future missions how to rendezvous with and land on small asteroids.'
+  },
+  dawn: {
+    purpose: 'Its purpose was to orbit and compare the two largest worlds in the Asteroid Belt: rocky Vesta and icy Ceres.',
+    parts: 'Its key parts were two massive 20-meter solar wings, framing cameras, and three blue-glowing NSTAR Xenon ion thrusters.',
+    science: 'It revealed Vesta’s giant iron core and discovered bright salt domes and a 4-kilometer ice volcano on dwarf planet Ceres.',
+    presentFuture: 'Out of attitude fuel since 2018, Dawn circles Ceres in a safe, permanent orbit for decades to protect the dwarf planet.'
+  },
+  pioneer: {
+    purpose: 'Their purpose was to cross the uncharted Asteroid Belt and capture humanity’s first close-up data from Jupiter and Saturn.',
+    parts: 'Their main parts were a 2.74-meter dish, four nuclear SNAP-19 generators, radiation sensors, and the Golden Pioneer Plaque.',
+    science: 'They proved spacecraft could survive the Asteroid Belt and mapped the intense magnetic radiation belts of the gas giants.',
+    presentFuture: 'Silent since 2003, Pioneer 10 coasts into interstellar space at nearly 12 kilometers per second—carrying Earth’s story toward the stars.'
+  }
+};
+
+ARTIFACTS.forEach(a => {
+  if (AUDIO_BRIEFS[a.id]) {
+    a.audioBrief = AUDIO_BRIEFS[a.id];
+  }
+});
+

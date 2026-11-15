@@ -10,8 +10,12 @@ const state = {
   isNarrating: false,
   isAmbientOn: false,
   isAutoStory: false,
+  storyOrderMode: 'journey', // 'journey' (Earth->Moon->Mars->DeepSpace) | 'timeline' (1963->2024)
   autoAdvanceTimer: null,
   transitTimer: null,
+  speechFullText: '',
+  speechCharOffset: 0,
+  speechOnEnd: null,
   a11y: false
 };
 
@@ -33,10 +37,82 @@ const INTRO_PUNCH_LINES = [
    ============================================================================ */
 document.addEventListener('DOMContentLoaded', () => {
   initParallax();
+  initStarfield();
   renderMasterTimeline();
   updatePassportCount();
   setupKeyboardNav();
+  startCosmicOdometer();
 });
+
+function initStarfield() {
+  const canvas = document.getElementById('starfield-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const resize = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
+  resize();
+  window.addEventListener('resize', resize);
+
+  const stars = Array.from({ length: 85 }, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 1.4 + 0.3,
+    phase: Math.random() * Math.PI * 2,
+    speed: Math.random() * 0.025 + 0.008
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const s of stars) {
+      s.phase += s.speed;
+      const alpha = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin(s.phase));
+      ctx.fillStyle = `rgba(224, 242, 254, ${alpha})`;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function startCosmicOdometer() {
+  const pageLoadMs = Date.now();
+  const epoch2026Ms = Date.UTC(2026, 0, 1, 0, 0, 0);
+  const apollo11Ms = Date.UTC(1969, 6, 20, 20, 17, 0);
+  const msPerYear = 365.25 * 24 * 3600 * 1000;
+
+  // Pioneer 10 baseline ~20.824 billion km at Jan 1, 2026, traveling ~11.87 km/s
+  const pioneerBaseKm = 20824000000;
+  const pioneerSpeedKmS = 11.87;
+  const keplerSpeedKmS = 29.5;
+
+  const updateTick = () => {
+    const now = Date.now();
+    const secSince2026 = (now - epoch2026Ms) / 1000;
+    const secSinceLoad = (now - pageLoadMs) / 1000;
+
+    const pioneerTotal = Math.round(pioneerBaseKm + secSince2026 * pioneerSpeedKmS);
+    const pioneerSession = (secSinceLoad * pioneerSpeedKmS).toFixed(1);
+    const moonDriftCm = (((now - apollo11Ms) / msPerYear) * 3.8).toFixed(6);
+    const keplerSession = (secSinceLoad * keplerSpeedKmS).toFixed(1);
+
+    const pDistEl = document.getElementById('odo-pioneer-dist');
+    const pSessEl = document.getElementById('odo-pioneer-session');
+    const mDriftEl = document.getElementById('odo-moon-drift');
+    const kSessEl = document.getElementById('odo-kepler-session');
+
+    if (pDistEl) pDistEl.innerText = `${pioneerTotal.toLocaleString()} km`;
+    if (pSessEl) pSessEl.innerText = `+${Number(pioneerSession).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km`;
+    if (mDriftEl) mDriftEl.innerText = `${moonDriftCm} cm`;
+    if (kSessEl) kSessEl.innerText = `+${Number(keplerSession).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km`;
+  };
+
+  updateTick();
+  setInterval(updateTick, 100);
+}
 
 function initParallax() {
   const bg = document.getElementById('cosmic-bg');
@@ -58,6 +134,7 @@ function launchExpeditionWithAudio() {
   const heroCard = document.getElementById('hero-welcome-card');
 
   state.isAutoStory = true;
+  state.storyOrderMode = 'journey';
   state.isPlayingIntro = true;
   updateAutoStoryUI();
   startAmbientAudio();
@@ -72,9 +149,11 @@ function launchExpeditionWithAudio() {
     if (overlay) overlay.classList.add('hidden');
     if (heroCard) heroCard.classList.remove('opacity-0', 'pointer-events-none');
 
-    // Seamlessly transition into Artifact #0 (1963 DSN) and continue through all 15
+    // Seamlessly transition into Zone-by-Zone Journey: Earth -> Moon -> Mars -> Deep Space
     if (state.isAutoStory) {
-      openArtifact(0);
+      const firstId = JOURNEY_ORDER[0];
+      const firstIdx = ARTIFACTS.findIndex(a => a.id === firstId);
+      openArtifact(firstIdx !== -1 ? firstIdx : 0);
     }
   });
 
@@ -198,6 +277,8 @@ function returnToMap() {
 function renderArtifactStage(a) {
   // Header & Badges
   document.getElementById('story-zone-pill').innerText = `${a.year} • ${a.zoneLabel}`;
+  const archEl = document.getElementById('story-archetype-pill');
+  if (archEl) archEl.innerText = a.archetype || '';
   const statusEl = document.getElementById('story-status-pill');
   statusEl.innerText = a.statusLabel;
   statusEl.className = `font-mono-tech text-[11px] font-bold px-3 py-1 rounded-full border ${a.statusClass}`;
@@ -208,6 +289,18 @@ function renderArtifactStage(a) {
   document.getElementById('story-location').innerText = `${a.location} (${a.coords})`;
   document.getElementById('story-nssdca').innerText = a.nssdcaId;
 
+  // Kid-friendly comparisons, problem/trick & takeaway
+  const probEl = document.getElementById('story-problem');
+  const trickEl = document.getElementById('story-trick');
+  const scaleEl = document.getElementById('story-everyday-scale');
+  const gravEl = document.getElementById('story-gravity-check');
+  const takeEl = document.getElementById('story-takeaway');
+  if (probEl) probEl.innerText = a.problem || '';
+  if (trickEl) trickEl.innerText = a.trick || '';
+  if (scaleEl) scaleEl.innerText = a.everydayScale || '';
+  if (gravEl) gravEl.innerText = a.gravityCheck || '';
+  if (takeEl) takeEl.innerText = a.takeaway || '';
+
   // Resource Link
   const resLink = document.getElementById('story-resource-link');
   resLink.href = a.resourceUrl;
@@ -217,7 +310,7 @@ function renderArtifactStage(a) {
   document.getElementById('live-metric-value').innerText = a.liveMetricValue;
   document.getElementById('last-echo-text').innerText = a.lastEcho;
 
-  // Story Paragraphs
+  // Story Paragraphs (keep connected narrative on screen)
   const storyContainer = document.getElementById('story-paragraphs');
   storyContainer.innerHTML = a.story.map((p, i) => `
     <p id="story-p-${i}" class="text-slate-200 text-sm md:text-[15px] leading-relaxed p-1.5 transition-all">${p}</p>
@@ -396,11 +489,25 @@ function toggleTimelineAutoplay() {
     stopSpeech();
   } else {
     state.isAutoStory = true;
+    state.storyOrderMode = 'timeline';
     updateAutoStoryUI();
     startAmbientAudio();
     const startIdx = state.view === 'story' ? state.activeIndex : 0;
     openArtifact(startIdx);
   }
+}
+
+function getNextStoryIndex(currentIdx) {
+  if (state.storyOrderMode === 'journey' && typeof JOURNEY_ORDER !== 'undefined') {
+    const curId = ARTIFACTS[currentIdx]?.id;
+    const jPos = JOURNEY_ORDER.indexOf(curId);
+    if (jPos !== -1 && jPos + 1 < JOURNEY_ORDER.length) {
+      const nextId = JOURNEY_ORDER[jPos + 1];
+      return ARTIFACTS.findIndex(a => a.id === nextId);
+    }
+    return -1;
+  }
+  return currentIdx + 1 < ARTIFACTS.length ? currentIdx + 1 : -1;
 }
 
 function stopTimelineAutoplay() {
@@ -441,14 +548,23 @@ function toggleArtifactNarration() {
 function startArtifactNarration(autoAdvance = false) {
   const a = ARTIFACTS[state.activeIndex];
   if (!a) return;
+
+  // Build structured 5-part audio narration: Name, Purpose, Parts, Science, Present & Future
+  const brief = a.audioBrief || {};
   const punchSection = `${a.name}, ${a.year}. ${a.punchLine}`;
-  const text = `${punchSection} ${a.story.join(' ')}`;
+  const part0 = brief.purpose || a.story[0] || '';
+  const part1 = brief.parts || a.story[1] || '';
+  const part2 = brief.science || a.story[2] || '';
+  const part3 = brief.presentFuture || a.lastEcho || '';
+
+  const text = `${punchSection} ${part0} ${part1} ${part2} ${part3}`;
   state.isNarrating = true;
   updateNarrateBtn(true);
 
   const prefixLen = punchSection.length + 1;
-  const p0Len = prefixLen + a.story[0].length + 1;
-  const p1Len = p0Len + a.story[1].length + 1;
+  const p0End = prefixLen + part0.length + 1;
+  const p1End = p0End + part1.length + 1;
+  const p2End = p1End + part2.length + 1;
 
   const punchBox = document.getElementById('story-punchline')?.parentElement;
   if (punchBox) punchBox.classList.add('ring-2', 'ring-cyan-400');
@@ -459,10 +575,10 @@ function startArtifactNarration(autoAdvance = false) {
     clearSpokenHighlights();
     if (punchBox) punchBox.classList.remove('ring-2', 'ring-cyan-400');
 
-    // Continuous Story Mode: advance automatically to the next hardware artifact
+    // Continuous Story Mode: advance automatically via Journey Order (Earth->Moon->Mars->DeepSpace) or Timeline
     if (autoAdvance && state.isAutoStory && state.view === 'story') {
-      const nextIdx = state.activeIndex + 1;
-      if (nextIdx < ARTIFACTS.length) {
+      const nextIdx = getNextStoryIndex(state.activeIndex);
+      if (nextIdx !== -1) {
         state.autoAdvanceTimer = setTimeout(() => {
           if (state.isAutoStory && state.view === 'story') {
             openArtifact(nextIdx);
@@ -471,7 +587,7 @@ function startArtifactNarration(autoAdvance = false) {
       } else {
         // Reached the end of the expedition!
         stopTimelineAutoplay();
-        speakText('Our expedition from Earth to interstellar space is complete. Explore your Mission Passport to review every pioneer we visited.', () => {
+        speakText('Our expedition from Earth to the Moon, Mars, and deep space is complete. Explore your Mission Passport to review every pioneer we visited.', () => {
           togglePassportModal();
         });
       }
@@ -482,17 +598,28 @@ function startArtifactNarration(autoAdvance = false) {
       if (punchBox) punchBox.classList.add('ring-2', 'ring-cyan-400');
     } else {
       if (punchBox) punchBox.classList.remove('ring-2', 'ring-cyan-400');
-      if (charIndex < p0Len) document.getElementById('story-p-0')?.classList.add('spoken-active');
-      else if (charIndex < p1Len) document.getElementById('story-p-1')?.classList.add('spoken-active');
-      else document.getElementById('story-p-2')?.classList.add('spoken-active');
     }
   });
 }
 
-function speakText(text, onEnd, onBoundaryChar) {
+function speakText(text, onEnd, onBoundaryChar, startOffset = 0) {
   if (!('speechSynthesis' in window)) return;
+  state.speechSkipping = true;
   window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(text);
+  state.speechSkipping = false;
+
+  state.speechFullText = text;
+  state.speechCharOffset = startOffset;
+  state.speechOnEnd = onEnd;
+  state.speechOnBoundary = onBoundaryChar;
+
+  const slice = text.slice(startOffset);
+  if (!slice.trim()) {
+    if (onEnd) onEnd();
+    return;
+  }
+
+  const utt = new SpeechSynthesisUtterance(slice);
   utt.rate = 0.96;
   utt.pitch = 1.0;
 
@@ -501,19 +628,61 @@ function speakText(text, onEnd, onBoundaryChar) {
   if (preferred) utt.voice = preferred;
 
   utt.onboundary = (e) => {
-    if (onBoundaryChar && (e.name === 'word' || e.name === 'sentence')) {
-      onBoundaryChar(e.charIndex);
+    if (e.name === 'word' || e.name === 'sentence') {
+      const absIdx = startOffset + e.charIndex;
+      state.speechCharOffset = absIdx;
+      if (onBoundaryChar) onBoundaryChar(absIdx);
     }
   };
-  utt.onend = () => { if (onEnd) onEnd(); };
-  utt.onerror = () => { if (onEnd) onEnd(); };
+  utt.onend = () => {
+    if (state.speechSkipping) return;
+    if (onEnd) onEnd();
+  };
+  utt.onerror = () => {
+    if (state.speechSkipping) return;
+    if (onEnd) onEnd();
+  };
 
   window.speechSynthesis.speak(utt);
 }
 
+function skipForwardSeconds(seconds = 5) {
+  // 1. If mission video is playing, seek forward by seconds
+  const vidEl = document.getElementById('artifact-video');
+  if (state.mediaMode === 'video' && vidEl && !vidEl.paused && vidEl.duration) {
+    vidEl.currentTime = Math.min(vidEl.duration, vidEl.currentTime + seconds);
+    return true;
+  }
+
+  // 2. If speech narration is active, jump forward ~15 chars/sec (~75 chars for 5s) to next word boundary
+  if (state.isNarrating && state.speechFullText) {
+    const jumpChars = Math.round(seconds * 15);
+    let nextPos = state.speechCharOffset + jumpChars;
+    if (nextPos >= state.speechFullText.length - 10) {
+      // Near end: finish current narration cleanly
+      state.speechSkipping = true;
+      window.speechSynthesis.cancel();
+      state.speechSkipping = false;
+      if (state.speechOnEnd) state.speechOnEnd();
+      return true;
+    }
+    const spacePos = state.speechFullText.indexOf(' ', nextPos);
+    if (spacePos !== -1 && spacePos < nextPos + 20) {
+      nextPos = spacePos + 1;
+    }
+    speakText(state.speechFullText, state.speechOnEnd, state.speechOnBoundary, nextPos);
+    return true;
+  }
+  return false;
+}
+
 function stopSpeech() {
+  state.speechSkipping = true;
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  state.speechSkipping = false;
   state.isNarrating = false;
+  state.speechFullText = '';
+  state.speechCharOffset = 0;
   updateNarrateBtn(false);
   clearSpokenHighlights();
 }
@@ -527,7 +696,7 @@ function updateNarrateBtn(active) {
 }
 
 function clearSpokenHighlights() {
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 4; i++) {
     document.getElementById(`story-p-${i}`)?.classList.remove('spoken-active');
   }
 }
@@ -629,8 +798,22 @@ function toggleA11y() {
 function setupKeyboardNav() {
   window.addEventListener('keydown', (e) => {
     if (state.view !== 'story') return;
-    if (e.key === 'ArrowRight') openArtifact(state.activeIndex + 1);
-    else if (e.key === 'ArrowLeft') openArtifact(state.activeIndex - 1);
-    else if (e.key === 'Escape') returnToMap();
+    if (e.key === 'ArrowRight') {
+      if (!e.shiftKey && skipForwardSeconds(5)) {
+        e.preventDefault();
+        return;
+      }
+      openArtifact(state.activeIndex + 1);
+    } else if (e.key === 'ArrowLeft') {
+      const vidEl = document.getElementById('artifact-video');
+      if (!e.shiftKey && state.mediaMode === 'video' && vidEl && !vidEl.paused && vidEl.duration) {
+        e.preventDefault();
+        vidEl.currentTime = Math.max(0, vidEl.currentTime - 5);
+        return;
+      }
+      openArtifact(state.activeIndex - 1);
+    } else if (e.key === 'Escape') {
+      returnToMap();
+    }
   });
 }
